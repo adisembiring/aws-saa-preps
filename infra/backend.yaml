@@ -147,7 +147,6 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
 
   EIP:
-    DependsOn: GatewayAttachement
     Type: 'AWS::EC2::EIP'
     Properties:
       Domain: vpc

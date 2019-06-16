@@ -234,6 +234,7 @@ Resources:
   # VPC creations
   WebServerOne:
     Type: AWS::EC2::Instance
+    DependsOn: PrivateRoute
     Metadata: 
       AWS::CloudFormation::Init:
         config: 
@@ -275,6 +276,7 @@ Resources:
 
   WebServerTwo:
     Type: AWS::EC2::Instance
+    DependsOn: PrivateRoute
     Metadata: 
       AWS::CloudFormation::Init:
         config: 

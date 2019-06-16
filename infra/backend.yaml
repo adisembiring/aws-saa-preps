@@ -326,11 +326,24 @@ Resources:
       Subnets:
         - !Ref PublicSubnetOne
         - !Ref PublicSubnetTwo
-      Instances:
-        - !Ref WebServerOne
-        - !Ref WebServerTwo
-      Listeners:
-        - LoadBalancerPort: '80'
-          InstancePort: '80'
-          Protocol: HTTP
-          InstanceProtocol: HTTP
+      Tags:
+        - Key: Name
+          Value: adi-elb
+
+  HTTPlistener:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      LoadBalancerArn: !Ref ELB
+      Port: 80
+      Protocol: "HTTP"
+
+  ELBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      TargetType: lambda
+      Targets:
+      - Id: !Ref WebServerOne
+      - Id: !Ref WebServerTwo
+      Tags:
+        - Key: Name
+          Value: adi-elb-target

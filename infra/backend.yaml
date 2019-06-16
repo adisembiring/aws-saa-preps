@@ -11,13 +11,13 @@ Mappings:
     VPC:
       CIDR: '10.0.0.0/16'
     PublicOne:
-      CIDR: '10.0.0.0/24'
-    PublicTwo:
       CIDR: '10.0.1.0/24'
-    PrivateOne:
+    PublicTwo:
       CIDR: '10.0.2.0/24'
-    PrivateTwo:
+    PrivateOne:
       CIDR: '10.0.3.0/24'
+    PrivateTwo:
+      CIDR: '10.0.4.0/24'
 
 Resources:
   # Create VPC and a public subnet for the development machine
@@ -83,3 +83,49 @@ Resources:
       Tags:
         - Key: Name
           Value: adi-private-subnet-two
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: adi-igw
+  GatewayAttachement:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref 'VPC'
+      InternetGatewayId: !Ref 'InternetGateway'
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Name
+          Value: adi-rt-public
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachement
+    Properties:
+      RouteTableId: !Ref 'PublicRouteTable'
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref 'InternetGateway'
+
+  PublicSubnetOneRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetOne
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnetTwoRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetTwo
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Name
+          Value: adi-rt-private

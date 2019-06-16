@@ -27,9 +27,9 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
       CidrBlock: !FindInMap ['SubnetConfig', 'VPC', 'CIDR']
-    Tags:
-      - Key: Name
-        Value: adi-vpc-stack
+      Tags:
+        - Key: Name
+          Value: adi-vpc-stack
 
   PublicSubnetOne:
     Type: AWS::EC2::Subnet

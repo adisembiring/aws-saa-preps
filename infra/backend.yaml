@@ -28,8 +28,9 @@ Resources:
       EnableDnsHostnames: true
       CidrBlock: !FindInMap ['SubnetConfig', 'VPC', 'CIDR']
     Tags:
-    - Key: Name
-      Value: adi-vpc-stack
+      - Key: Name
+        Value: adi-vpc-stack
+
   PublicSubnetOne:
     Type: AWS::EC2::Subnet
     Properties:
@@ -41,8 +42,8 @@ Resources:
       CidrBlock: !FindInMap ['SubnetConfig', 'PublicOne', 'CIDR']
       MapPublicIpOnLaunch: true
       Tags:
-      - Key: Name
-        Value: adi-public-subnet-one
+        - Key: Name
+          Value: adi-public-subnet-one
   PublicSubnetTwo:
     Type: AWS::EC2::Subnet
     Properties:
@@ -54,8 +55,8 @@ Resources:
       CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
       MapPublicIpOnLaunch: true
       Tags:
-      - Key: Name
-        Value: adi-public-subnet-two
+        - Key: Name
+          Value: adi-public-subnet-two
   PrivateSubnetOne:
     Type: AWS::EC2::Subnet
     Properties:
@@ -80,5 +81,5 @@ Resources:
       CidrBlock: !FindInMap ['SubnetConfig', 'PrivateTwo', 'CIDR']
       MapPublicIpOnLaunch: false
       Tags:
-      - Key: Name
-        Value: adi-private-subnet-two
+        - Key: Name
+          Value: adi-private-subnet-two

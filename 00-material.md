@@ -30,7 +30,7 @@ aws cloudformation create-stack \
 
 aws cloudformation create-stack --stack-name adi-cfstack-demo  \
     --template-body file://infra/backend.yaml \
-    --parameters  ParameterKey=KeyName,ParameterValue=adi-virginia-keypair.pem
+    --parameters  ParameterKey=KeyName,ParameterValue=adi-virginia-keypair
 
 
 aws cloudformation validate-template --template-body file://infra/backend.yaml

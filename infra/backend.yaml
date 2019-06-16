@@ -167,8 +167,8 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref 'PrivateRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: !Ref 'NAT'
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref 'NAT'
 
   # Create a security group for the bastion host that allows SSH access
   BastionSecurityGroup:

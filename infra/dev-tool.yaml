@@ -2,9 +2,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Bootstrap development environment
 Mappings:
-  ECSAmi:
+  RegionMap:
     us-east-1: # N.Virginia 
-      AMI: ami-0c6b1d09930fac512
+      AMI: ami-467ca739
     ap-southeast-2: # Sydney
       AMI: ami-0fb7513bcdc525c3b
   SubnetConfig:
@@ -13,10 +13,13 @@ Mappings:
     PublicOne:
       CIDR: '10.0.0.0/24'
 Parameters:
+  NameOfService:
+    Description: The name of the service this stack is to be used for.
+    Type: String
   KeyName:
-    Description: Name of an existing EC2 KeyPair to enable SSH access to the EC2 instances
+    Description: Name of existing EC2 KeyPair to enable SSH access
     Type: AWS::EC2::KeyPair::KeyName
-    MinLength: 1
+  
 Resources:
   # Create VPC and a public subnet for the development machine
   VPC:
@@ -32,7 +35,7 @@ Resources:
         Fn::Select:
           - 0
           - Fn::GetAZs: {Ref: 'AWS::Region'}
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref VPC
       CidrBlock: !FindInMap ['SubnetConfig', 'PublicOne', 'CIDR']
       MapPublicIpOnLaunch: true
 
@@ -43,19 +46,19 @@ Resources:
   GatewayAttachement:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      VpcId: !Ref 'VPC'
-      InternetGatewayId: !Ref 'InternetGateway'
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref 'VPC'
+      VpcId: !Ref VPC
   PublicRoute:
     Type: AWS::EC2::Route
     DependsOn: GatewayAttachement
     Properties:
-      RouteTableId: !Ref 'PublicRouteTable'
-      DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: !Ref 'InternetGateway'
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
   PublicSubnetOneRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -66,19 +69,21 @@ Resources:
   DevelopmentSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Access to the development machine
-      VpcId: !Ref 'VPC'
-  DevelopmentSecurityGroupIngress:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      GroupId: !Ref 'DevelopmentSecurityGroup'
-      IpProtocol: tcp
-      FromPort: 22
-      ToPort: 22
-      CidrIp: 0.0.0.0/0
+      GroupName: Adi DMZ
+      GroupDescription: Access to development manchine
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
 
-  # Create instance profile that allows the developer
-  # machine to act as an account root.
+  # create instance profile that allowes the developer
+  # act as account root
   RootRole:
     Type: AWS::IAM::Role
     Properties:
@@ -100,24 +105,45 @@ Resources:
                 Action: "*"
                 Resource: "*"
   RootInstanceProfile:
-    Type: "AWS::IAM::InstanceProfile"
+    Type: AWS::IAM::InstanceProfile
     Properties:
-      Path: "/"
+      Path: /
       Roles:
-        - !Ref "RootRole"
+        - !Ref RootRole
 
-  # Create a development machine in the public subnet.
-  DevelopmentMachine:
+  EC2Instance:
     Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          packages:
+            yum:
+              git-core: []
+              node: []
+              npm: []
+              httpd: []
+              php: []
+          files:
+            /var/www/html/index.php:
+              content: !Sub |
+                <?php print "Hello world Abs was here!"; ?>
+          services:
+            sysvinit:
+              httpd:
+                enabled: true
+                ensureRunning: true
     Properties:
-      ImageId:
-        Fn::FindInMap:
-          - ECSAmi
-          - Ref: AWS::Region
-          - AMI
       InstanceType: t2.micro
-      IamInstanceProfile: !Ref RootInstanceProfile
-      KeyName: !Ref KeyName
+      ImageId: 
+        Fn::FindInMap: 
+          - RegionMap
+          - !Ref AWS::Region
+          - AMI
+      Tags:
+        - Key: Name
+          Value: !Ref NameOfService
+      KeyName: !Ref KeyName   
+      IamInstanceProfile: !Ref RootInstanceProfile 
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
           DeviceIndex: 0
@@ -125,10 +151,16 @@ Resources:
             - !Ref DevelopmentSecurityGroup
           SubnetId: !Ref PublicSubnetOne
       UserData:
-        Fn::Base64: |
-          #!/bin/bash -x
-          yum update -y
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash -xe            
+            # Ensure AWS CFN Bootstrap is the latest
+            yum update -y
+            curl --silent --location https://rpm.nodesource.com/setup_10.x | bash -
+            yum install -y aws-cfn-bootstrap
+            # Install the files and packages from the metadata
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance  --region ${AWS::Region}
+
 Outputs:
-  IPAddress:
-    Description: The IP address of your remote development machine
-    Value: !GetAtt ['DevelopmentMachine', 'PublicIp']
+  ServerDns:
+    Value: !Sub 'http://${EC2Instance.PublicDnsName}'

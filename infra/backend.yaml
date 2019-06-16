@@ -156,7 +156,7 @@ Resources:
       SubnetId: !Ref 'PrivateSubnetOne'
       Tags: 
         - Key: Name
-          Value: adi-nat-private-one
+          Value: adi-nat
 
   PrivateRoute:
     Type: AWS::EC2::Route

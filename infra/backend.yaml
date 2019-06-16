@@ -19,6 +19,12 @@ Mappings:
     PrivateTwo:
       CIDR: '10.0.4.0/24'
 
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the EC2 instances
+    Type: AWS::EC2::KeyPair::KeyName
+    MinLength: 1
+    
 Resources:
   # Create VPC and a public subnet for the development machine
   VPC:
@@ -225,3 +231,64 @@ Resources:
       FromPort: 22
       ToPort: 22
       SourceSecurityGroupId: !Ref BastionSecurityGroup
+
+  # VPC creations
+  WebServerOne:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        Fn::FindInMap:
+          - ECSAmi
+          - Ref: AWS::Region
+          - AMI
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: false
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref EC2SecurityGroup
+          SubnetId: !Ref PrivateSubnetOne
+      Tags:
+        - Key: Name
+          Value: adi-webserver-one
+
+  WebServerTwo:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        Fn::FindInMap:
+          - ECSAmi
+          - Ref: AWS::Region
+          - AMI
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: false
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref EC2SecurityGroup
+          SubnetId: !Ref PrivateSubnetTwo
+      Tags:
+        - Key: Name
+          Value: adi-webserver-two
+
+  BastionHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        Fn::FindInMap:
+          - ECSAmi
+          - Ref: AWS::Region
+          - AMI
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: false
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref BastionSecurityGroup
+          SubnetId: !Ref PublicSubnetOne
+      Tags:
+        - Key: Name
+          Value: adi-bastion

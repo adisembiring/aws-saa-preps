@@ -14,3 +14,9 @@ Material: https://tutorialsdojo.com/aws-auto-scaling/
 Week 1: 
 - summarize material from cloud guru
 - 
+
+
+aws cloudformation create-stack --stack-name adi-cf-stack \
+    --template-body file://infra/backend.yaml --parameters \
+    ParameterKey=ECSAmi,ParameterValue=us-east-1 \ 
+    ParameterKey=KeyPairName,ParameterValue=adi-virginia-keypair \ 

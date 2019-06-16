@@ -260,7 +260,7 @@ Resources:
           mv htaccess.txt .htaccess
           chkconfig httpd on
           service httpd start
-          
+
       Tags:
         - Key: Name
           Value: adi-webserver-one
@@ -317,3 +317,20 @@ Resources:
       Tags:
         - Key: Name
           Value: adi-bastion
+
+  ELB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - !Ref ELBSecurityGroup
+      Subnets:
+        - !Ref PublicSubnetOne
+        - !Ref PublicSubnetTwo
+      Instances:
+        - !Ref WebServerOne
+        - !Ref WebServerTwo
+      Listeners:
+        - LoadBalancerPort: '80'
+          InstancePort: '80'
+          Protocol: HTTP
+          InstanceProtocol: HTTP

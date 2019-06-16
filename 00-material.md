@@ -19,4 +19,18 @@ Week 1:
 aws cloudformation create-stack --stack-name adi-cf-stack \
     --template-body file://infra/backend.yaml --parameters \
     ParameterKey=ECSAmi,ParameterValue=us-east-1 \ 
-    ParameterKey=KeyPairName,ParameterValue=adi-virginia-keypair \ 
+    ParameterKey=KeyPairName,ParameterValue=adi-virginia-keypair
+
+
+
+aws cloudformation create-stack \
+  --stack-name adi-cf-stack \
+  --template-body file://infra/backend.yaml
+
+
+aws cloudformation create-stack --stack-name adi-cfstack-demo  \
+    --template-body file://infra/backend.yaml \
+    --parameters  ParameterKey=KeyPairName,ParameterValue=adi-virginia-keypair.pem
+
+
+aws cloudformation validate-template --template-body file://infra/backend.yaml

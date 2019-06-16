@@ -268,8 +268,7 @@ Resources:
           !Sub |
             #!/bin/bash -xe            
             yum install -y aws-cfn-bootstrap
-            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance  --region ${AWS::Region}
-
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerOne  --region ${AWS::Region}
       Tags:
         - Key: Name
           Value: adi-webserver-one
@@ -310,7 +309,7 @@ Resources:
           !Sub |
             #!/bin/bash -xe            
             yum install -y aws-cfn-bootstrap
-            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance  --region ${AWS::Region}
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerTwo  --region ${AWS::Region}
       Tags:
         - Key: Name
           Value: adi-webserver-two

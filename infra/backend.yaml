@@ -256,7 +256,7 @@ Resources:
           - ECSAmi
           - Ref: AWS::Region
           - AMI
-      InstanceType: t2.micro
+      InstanceType: t3.micro
       KeyName: !Ref KeyName
       NetworkInterfaces:
         - AssociatePublicIpAddress: false
@@ -324,7 +324,7 @@ Resources:
           - ECSAmi
           - Ref: AWS::Region
           - AMI
-      InstanceType: t2.micro
+      InstanceType: t3.micro
       KeyName: !Ref KeyName
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
@@ -371,3 +371,9 @@ Resources:
       Targets:
         - Id: !Ref WebServerOne
         - Id: !Ref WebServerTwo
+
+Outputs:
+  URL:
+    Description: URL of the website
+    Value: !Sub 'http://${ELB.DNSName}'
+

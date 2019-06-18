@@ -213,6 +213,7 @@ Resources:
       Tags:
         - Key: Name
           Value: adi-ec2-sg
+
   EC2SecurityGroupELBIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -230,6 +231,24 @@ Resources:
       FromPort: 22
       ToPort: 22
       SourceSecurityGroupId: !Ref BastionSecurityGroup
+
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: DB access to EC2
+      VpcId: !Ref 'VPC'
+      Tags:
+        - Key: Name
+          Value: adi-db-sg
+
+  RDSSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'RDSSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref EC2SecurityGroup
 
   # VPC creations
   WebServerOne:

@@ -11,6 +11,35 @@ Blueprint: https://d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS
 Material: https://tutorialsdojo.com/aws-auto-scaling/
 
 # Next Step
-Week 1: 
-- summarize material from cloud guru
-- build HA serivce (2 EC2, 2 RDS)
+
+
+# Exam Review
+
+## 2019-06-22
+- Manual DR with custom AMI
+- VPN
+- NACL on EC2 make sure SSH enabled
+- WHitelist private subnet internet access, is it pososible only for temporary ?
+
+## 2019-06-23
+- Security network access audit / Flow log
+- Cloudfront Dynamic Content
+- IAM Policy Owner Concept
+- Invalid VPC peering
+- NAT Instance Demo
+
+# 2019-06-25
+- Automated Backup
+- Autoscaling Cooldown / Rule / Time
+
+# 2019-06-28
+- VPCs Peering in AWS network
+- VPCs peering to Other provider network, ie: MongoDB Atlas
+- Lambda Cloudwatch Metrics
+- POC S3 encryption
+- Modify AMI and Lounch Config / Autoscaling
+- High memory metrics on EC2
+- Elastic Map Reduce
+- RDS Defaut metrics
+- TODO: Setup S3 static website and ensure it only accesible via CloudFront
+- Cloud HSM

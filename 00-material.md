@@ -12,6 +12,8 @@ Material: https://tutorialsdojo.com/aws-auto-scaling/
 
 # Next Step
 
+# Final Prep:
+- EFS
 
 # Exam Review
 

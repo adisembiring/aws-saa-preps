@@ -16,7 +16,9 @@
     - Splunk
     
 # Athena
-Amazon Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL
+Amazon Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL.
+Amazon Athena is an interactive query service that makes it easy to analyze data directly in Amazon Simple Storage Service (Amazon S3) using standard SQL. With a few actions in the AWS Management Console, you can point Athena at your data stored in Amazon S3 and begin using standard SQL to run ad-hoc queries and get results in seconds.
+
 
 # AWS Resource  Name
 Amazon Resource Names (ARNs) uniquely identify AWS resources. We require an ARN when you need to specify a resource unambiguously across all of AWS, such as in IAM policies, Amazon Relational Database Service (Amazon RDS) tags, and API calls.
@@ -29,9 +31,15 @@ Amazon Resource Names (ARNs) uniquely identify AWS resources. We require an ARN 
 ## Redshift Performance
 When you create a parameter group, the default WLM configuration contains one queue that can run up to five queries concurrently
 
+## AWS Redshift SPectrum
+queries against exabytes of unstructured data in Amazon S3
+Amazon Redshift also includes Redshift Spectrum, allowing you to directly run SQL queries against exabytes of unstructured data in Amazon S3. No loading or transformation is required, and you can use open data formats, including Avro, CSV, Grok, ORC, Parquet, RCFile, RegexSerDe, SequenceFile, TextFile, and TSV
 
 # AWS Glue
 AWS Glue is a fully managed extract, transform, and load (ETL) service that makes it easy for customers to prepare and load their data for analytics. You can create and run an ETL job with a few clicks in the AWS Management Console
+
+# AWS Elastic Map Reduce (EMR)
+log processing system for map reduce
 
 
 # AWS Work Space / Main Frame

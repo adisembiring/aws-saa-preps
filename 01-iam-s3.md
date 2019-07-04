@@ -2,8 +2,16 @@
 
 ## Active Directory
 - Directory Service AD Connector: trusted relationship beetween AD-AWS Account
+- Setup a Federation proxy or an Identity provider (SAML)
 - Use IAM role mapping
-- STS:AssumeRole
+- 
+- Setup an AWS Security Token Service to generate temporary tokens  `STS:AssumeRole`
+
+
+- Setup a Federation proxy or an Identity provider
+
+
+- Configure an IAM role (Option 4) 
 
 
 # S3

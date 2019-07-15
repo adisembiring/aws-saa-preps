@@ -223,6 +223,15 @@ Resources:
       ToPort: 80
       SourceSecurityGroupId: !Ref ELBSecurityGroup
 
+  EC2SecurityGroupEphELBIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref 'EC2SecurityGroup'
+      IpProtocol: tcp
+      FromPort: 32768
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref ELBSecurityGroup
+
   EC2SecurityGroupBastionIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -260,7 +269,7 @@ Resources:
           packages: 
             yum:
               nodejs: []
-              git-core: []
+              git: []
           files: 
             /var/www/html/index.html:
               content: !Sub |
@@ -287,7 +296,8 @@ Resources:
       UserData:
         'Fn::Base64': 
           !Sub |
-            #!/bin/bash -xe            
+            #!/bin/bash -xe 
+            curl -sL https://rpm.nodesource.com/setup_10.x | bash -
             yum install -y aws-cfn-bootstrap
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerOne  --region ${AWS::Region}
       Tags:
@@ -303,7 +313,7 @@ Resources:
           packages: 
             yum:
               nodejs: []
-              git-core: []
+              git: []
           files: 
             /var/www/html/index.html:
               content: !Sub |

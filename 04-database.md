@@ -34,6 +34,7 @@ Snapshot
 - it's a stand by DB for disaster replica not read replica DB
 - When the DB instance down, RDS will automatically fail over to the standby instance
 - It also good for instance upgrade with Zero Downtime
+- max: 2 zones
 
 
 ## Read replicase

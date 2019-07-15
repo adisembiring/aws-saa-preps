@@ -123,6 +123,7 @@ Resources:
               npm: []
               httpd: []
               php: []
+              httpd-tools: []
           files:
             /var/www/html/index.php:
               content: !Sub |

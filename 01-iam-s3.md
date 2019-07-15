@@ -4,14 +4,7 @@
 - Directory Service AD Connector: trusted relationship beetween AD-AWS Account
 - Setup a Federation proxy or an Identity provider (SAML)
 - Use IAM role mapping
-- 
 - Setup an AWS Security Token Service to generate temporary tokens  `STS:AssumeRole`
-
-
-- Setup a Federation proxy or an Identity provider
-
-
-- Configure an IAM role (Option 4) 
 
 
 # S3
@@ -50,7 +43,7 @@ usages:
 - storage tiering, and migration
 - Encrypt by default
 
-
+## Storage Gateway Types
 File Gateway 
 - File gateway - for flat files, stored directly to s3
 - Big data analytics, data processing, machine learning or cloud data migration workloads 
@@ -63,6 +56,7 @@ Volume Gateay
 - Cached Volumes - entire data set is stored on S3 and most freq acces data is cached on site
 - Stored voumes: entired data set is stored on site and is asyhcournus backed up to S3
 
+## Storage Gateway: Perfornamce Impreovment
 For low latency gateway:
 - File Gateway
 - Cached Volume Gateway

@@ -14,6 +14,7 @@ S3 Storage Classes
 - Standard I/A
     - Less frequent access but Rapid access when needed
     - 99,9999% SLA
+    - Suitable for not re-creatable object
 
 - One Zone-IA
     - like backup copies, disaster recovery copies
@@ -100,6 +101,11 @@ HA vs Fault Tolerant
 - HA: The user still able to access the system even of a component system failure. Solve this by Multi AZ, but it still have a performance degradation problem.
 - Fault Tolerant: Not only HA but it should not impact with performance degradation. Impement Extra redudancy, but problem is Cost.
 
+How to setup LB:
+- create two or more instances in different AZ
+- select LB internet facing/not
+- define port
+- define target group: health check 
 
 # Auto scaling
 - CI/CD Autoscaling pipeline
@@ -155,4 +161,11 @@ Use signed cookies for the following cases:
 - setup two origin group: 1: primary and 2: secondary, if primary return 504, it fail over to secondary
 - Lambda@Edge to allow cloudfront delivery and execute customize content. ie: authentication, images based on country, etc.
 
+## Cloudfront: S3 Changes and Versioning
+To control the versions of files that are served from your distribution, you can either invalidate files or give them versioned file names. If you want to update your files frequently, AWS recommends that you primarily use file versioning for the following reasons:
 
+-Versioning enables you to control which file a request returns even when the user has a version cached either locally or behind a corporate caching proxy. If you invalidate the file, the user might continue to see the old version until it expires from those caches.
+-CloudFront access logs include the names of your files, so versioning makes it easier to analyze the results of file changes.
+-Versioning provides a way to serve different versions of files to different users.
+-Versioning simplifies rolling forward and back between file revisions.
+-Versioning is less expensive. You still have to pay for CloudFront to transfer new versions of your files to edge locations, but you don't have to pay for invalidating files.

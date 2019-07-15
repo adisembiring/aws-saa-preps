@@ -150,9 +150,6 @@ Resources:
     Type: 'AWS::EC2::EIP'
     Properties:
       Domain: vpc
-    Tags: 
-      - Key: Name
-        Value: adi-eip-nat
       
   NAT:     
     Type: AWS::EC2::NatGateway
@@ -262,8 +259,8 @@ Resources:
         config: 
           packages: 
             yum:
-              httpd: []
-              mysql: []
+              nodejs: []
+              git-core: []
           files: 
             /var/www/html/index.html:
               content: !Sub |
@@ -305,8 +302,8 @@ Resources:
         config: 
           packages: 
             yum:
-              httpd: []
-              mysql: []
+              nodejs: []
+              git-core: []
           files: 
             /var/www/html/index.html:
               content: !Sub |
@@ -333,7 +330,8 @@ Resources:
       UserData:
         'Fn::Base64': 
           !Sub |
-            #!/bin/bash -xe            
+            #!/bin/bash -xe          
+            curl -sL https://rpm.nodesource.com/setup_10.x | bash -  
             yum install -y aws-cfn-bootstrap
             /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerTwo  --region ${AWS::Region}
       Tags:

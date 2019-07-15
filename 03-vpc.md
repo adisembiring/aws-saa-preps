@@ -182,6 +182,14 @@ An elastic network interface (ENI) is a logical networking component in a VPC th
 - warm attach: instance stop
 - cold attach: instance is being launched
 
+# Elastic IP Address
+Types:
+- Amazon Pool
+- Owned By me
+
+Pricing: 
+- Free if it only 1
+- normally it used for NAT
 
 # Access private resource from AWS Lambda
 - Select VPC
